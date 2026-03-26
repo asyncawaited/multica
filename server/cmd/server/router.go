@@ -99,7 +99,7 @@ func NewRouter(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus) chi.Route
 
 	// Protected API routes
 	r.Group(func(r chi.Router) {
-		r.Use(middleware.Auth)
+		r.Use(middleware.Auth(queries))
 
 		// Auth
 		r.Get("/api/me", h.GetMe)
@@ -157,6 +157,13 @@ func NewRouter(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus) chi.Route
 		})
 
 		r.Post("/api/daemon/pairing-sessions/{token}/approve", h.ApproveDaemonPairingSession)
+
+		// Personal Access Tokens
+		r.Route("/api/tokens", func(r chi.Router) {
+			r.Get("/", h.ListPersonalAccessTokens)
+			r.Post("/", h.CreatePersonalAccessToken)
+			r.Delete("/{id}", h.RevokePersonalAccessToken)
+		})
 
 		// Inbox
 		r.Route("/api/inbox", func(r chi.Router) {
