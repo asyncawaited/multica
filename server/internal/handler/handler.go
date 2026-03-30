@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"log/slog"
 	"net/http"
 
 	"github.com/jackc/pgx/v5"
@@ -113,6 +114,7 @@ func (h *Handler) resolveActor(r *http.Request, userID, workspaceID string) (act
 	// Validate the agent exists in the target workspace.
 	agent, err := h.Queries.GetAgent(r.Context(), parseUUID(agentID))
 	if err != nil || uuidToString(agent.WorkspaceID) != workspaceID {
+		slog.Debug("resolveActor: X-Agent-ID rejected, agent not found or workspace mismatch", "agent_id", agentID, "workspace_id", workspaceID)
 		return "member", userID
 	}
 
@@ -120,6 +122,7 @@ func (h *Handler) resolveActor(r *http.Request, userID, workspaceID string) (act
 	if taskID := r.Header.Get("X-Task-ID"); taskID != "" {
 		task, err := h.Queries.GetAgentTask(r.Context(), parseUUID(taskID))
 		if err != nil || uuidToString(task.AgentID) != agentID {
+			slog.Debug("resolveActor: X-Task-ID rejected, task not found or agent mismatch", "agent_id", agentID, "task_id", taskID)
 			return "member", userID
 		}
 	}
