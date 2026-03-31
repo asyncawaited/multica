@@ -70,7 +70,7 @@ function createComponents(
       // Mention links: mention://member/id or mention://agent/id
       if (href?.startsWith('mention://')) {
         return (
-          <span className="text-primary font-semibold mx-0.5">
+          <span className="text-primary font-semibold mx-px">
             {children}
           </span>
         )
@@ -95,7 +95,7 @@ function createComponents(
         <a
           href={href}
           onClick={handleClick}
-          className="text-primary hover:underline cursor-pointer"
+          className="text-brand hover:underline cursor-pointer"
         >
           {children}
         </a>
@@ -143,8 +143,8 @@ function createComponents(
         return <InlineCode>{children}</InlineCode>
       },
       pre: ({ children }) => <>{children}</>,
-      // Comfortable paragraph spacing
-      p: ({ children }) => <p className="my-2 leading-relaxed">{children}</p>,
+      // Paragraph spacing — aligned with rich-text-editor.css (0.375rem)
+      p: ({ children }) => <p className="my-1.5 leading-relaxed">{children}</p>,
       // Styled lists
       ul: ({ children }) => (
         <ul className="my-2 space-y-1 ps-4 pe-2 list-disc marker:text-muted-foreground">
@@ -164,17 +164,17 @@ function createComponents(
         <th className="text-left py-2 px-3 font-semibold text-muted-foreground">{children}</th>
       ),
       td: ({ children }) => <td className="py-2 px-3 border-b border-border/50">{children}</td>,
-      // Headings - H1/H2 same size, differentiated by weight
-      h1: ({ children }) => <h1 className="font-sans text-base font-bold mt-5 mb-3">{children}</h1>,
+      // Headings — aligned with rich-text-editor.css
+      h1: ({ children }) => <h1 className="font-sans text-lg font-bold mt-5 mb-2">{children}</h1>,
       h2: ({ children }) => (
-        <h2 className="font-sans text-base font-semibold mt-4 mb-3">{children}</h2>
+        <h2 className="font-sans text-base font-semibold mt-4 mb-2">{children}</h2>
       ),
       h3: ({ children }) => (
-        <h3 className="font-sans text-sm font-semibold mt-4 mb-2">{children}</h3>
+        <h3 className="font-sans text-sm font-semibold mt-3 mb-1">{children}</h3>
       ),
-      // Blockquotes
+      // Blockquotes — aligned with rich-text-editor.css
       blockquote: ({ children }) => (
-        <blockquote className="border-l-2 border-muted-foreground/30 pl-3 my-2 text-muted-foreground italic">
+        <blockquote className="border-l-2 border-border pl-3 my-2 text-muted-foreground">
           {children}
         </blockquote>
       ),
